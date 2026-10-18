@@ -27,7 +27,7 @@ cos           : cos(x). 2nd does acos
 
 tan           : tan(x). 2nd does atan
 
-/             : y divides x. 2nd does pi
+/             : x divides y. 2nd does pi
 
 x^2           : x^2. 2nd does sqrt
 
