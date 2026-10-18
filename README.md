@@ -1,10 +1,46 @@
 # HP
-HP emulator for TI-Evo 
+HP RPN emulator for TI-Evo
 
-This is python code to emulate an HP calculator on your TI-Evo. It gives you an RPN calculator, display the X,Y,Z, and T registers on your Evo. It uses the python engine to math, so it may not give exactly the same results as your TI-Evo.
+This is python code to emulate an HP calculator on your TI-Evo. It uses the python engine to do math, so it may not give exactly the same results as your TI-Evo would.
 
-Most of the keys on the TI-Evo are mapped to something sensitlve. The number keys, and the +,-,*, and / do the obvious things. The trig functions and exponennts have been implemented too. Keys that aren't mapped just do nothing. 
+The display starts up with the X, Y, Z, and T registers all set to 0. Along the bottom are the function keys menu, showing STACK, ROUND, BOOL, BASE, and DEG. You can enter an number by using the digit keys, then press Enter to push it onto the stack. Enter another number, then push '+' to add them. It supports the usual operations, including trig functions like sin, asin, etc. Use the function keys to get to more features. The STACK menu gives you a menu to operate on the stack, and do things like DUP and SWAP. ROUND gives you an option of rounding, truncating, or getting the fractional part of a number. BOOL will do and, or, nand, nor, and not on the X and Y registers. BASE will show the X register in a different base, either hex or binary. Finally, DEG switches between degrees and radians - the program starts in degress.
 
-There are no Alphanumerics, so the Alpha key does nothing. The mode/quit key does a quit. The del key deletes the current digit, clear sets the X register back to 0. Since it uses RPN, the parentheses keys don't do anything. sto/rcl just stores to a single memory location - ie: there are no named storage places. The math, prom, vars, and fractions keys don't do anythihg.
+Here are what the keys do (from top to bottom). Note that keys not mentioned, are not implemented.
 
-It's just for fun, hope you like it.
+Function keys : As mentioned above: STACK, ROUND, BOOL, BASE, and DEG
+
+2nd           : Combines to do 2nd operation on key
+quit          : Quits the program
+del           : Deletes last character in X
+
+clear         : Clears x
+
+y^x           : y^x. 2nd does root
+sin           : sin(x). 2nd does asin
+cos           : cos(x). 2nd does acos
+tan           : tan(x). 2nd does atan
+/             : y divides x. 2nd does pi
+
+x^2           : x^2. 2nd does sqrt
+EE            : Exponent (enter 'e' in X display)
+*             : multiply x * y. 2nd does e (2.7)
+
+log           : log base 10. 2nd does 10^x
+7-9           : digit keys
+-             : y - x
+
+ln            : natural log of x. 2nd does e^x
+4-6           : digit keys
++             : x + y
+
+sto           : sto number to memory. 2nd does recall
+1-3           : digit keys
+
+Home          : Exits program un-gracefully
+0             : digit 0
+.             : Enter decimal place in X
+(-)           : Change sign of x, or in exponent. Ex: 2e-2
+Enter
+
+
+
