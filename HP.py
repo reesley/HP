@@ -14,6 +14,7 @@ isDegrees = True  # Degrees or radians
 menu = 0          # What menu are we doing
 mem = 0           # A memory for sto, recall
 lastEnter = False # Was the last key an "enter"? Need for correct display
+errorUp = False   # Is there an error message up?
 
 # Convert x to display string, set to 8 digits of precision
 def format_number(n):
@@ -23,19 +24,37 @@ def format_number(n):
 
 # Convert xs to a number, watch for imcomplete numbers
 def decode_number(s):
+    global x
     # Display could be in binary or hex, after showing a number in that format
-    if 'b' in s or 'B' in s:
-        return int(s,2)
-    elif 'x' in s or 'X' in s:
-        return int(s,16)
-    else:
-        # Could be crazy stuff: 3.0e- or 3e
-        if s.endswith("-"):
-            s = s.rstrip("-")
-        if s.endswith("e"):
-            s = s.rstrip("e")
-        # Should be a clean nubmer, use float to convert
-        return float(s)
+    try:
+        if 'b' in s or 'B' in s:
+            return int(s,2)
+        elif 'x' in s or 'X' in s:
+            return int(s,16)
+        else:
+            # Could be crazy stuff: 3.0e- or 3e
+            if s.endswith("-"):
+                s = s.rstrip("-")
+            if s.endswith("e"):
+                s = s.rstrip("e")
+            # Should be a clean nubmer, use float to convert
+            return float(s)
+    except:
+        disp_error("Number conversion error")
+        x = 0
+        return 0
+
+def disp_error(s):
+    global errorUp
+    errorUp = True
+    cdraw_text(10,20, "Error")
+    cdraw_text(10,40,s)
+    cdraw_text(10,60,"Press any key to clear")
+
+def clear_error():
+    global errorUp
+    errorUp = False;
+    clear_rect(0,0,320,80)
 
 # Draw text after clearing the entire line first. Stops the flicker on screen redraw
 def cdraw_text(x,y,s):
@@ -157,6 +176,9 @@ def chs():
     global xs,x
     eindex = xs.find("e")
 
+    if len(xs) < 1:
+        xs = format_number(x)
+
     # if no exponent, just prepend -
     if eindex < 0:
         if xs.startswith("-"):
@@ -180,6 +202,8 @@ def doee():
     # Ignore if added again
     if xs.find("e") != -1:
         return
+    if len(xs) < 1:
+        return
     xs = xs + "e"
     draw_stack()
 
@@ -194,7 +218,12 @@ def enter():
 
 # Clear key
 def do_clear():
-    global x, xs
+    global x, y, z, t, xs, second
+    # 2nd key does clear all
+    if second:
+        t = 0
+        z = 0
+        y = 0
     x = 0
     xs = ""
     draw_stack()
@@ -362,8 +391,8 @@ def div():
         try:
             x = y / x
         except:
-            x = 9.999999e99
-            xs = "9.999999e99"
+            disp_error("Divide by zero error")
+            return
         after_double_op()
 
 # Sqr key, does sqrt too
@@ -373,8 +402,8 @@ def dosqr():
         try:
             x = sqrt(x)
         except:
-            x = 9.999999e99
-            xs = "9.999999e99"
+            disp_error("Negative sqrt ignored")
+            return
     else:
         x = x * x
     after_single_op()
@@ -388,8 +417,8 @@ def doroot():
         else:
             x = pow(x, y)
     except:
-        x = 9.999999e99
-        xs = "9.999999e99"        
+        disp_error("Negative root ignored")
+        return
     after_double_op()
 
 # log key, does e^x too
@@ -401,8 +430,8 @@ def doetox():
         else:
             x = log(x) # Log is ln
     except:
-        x = 9.999999e99
-        xs = "9.999999e99"                
+        disp_error("Log out of domain")
+        return
     after_single_op()
     
 # log10 key, does 10^x too
@@ -414,8 +443,8 @@ def dotenx():
         else:
             x = log10(x)
     except:
-        x = 9.999999e99
-        xs = "9.999999e99"                  
+        disp_error("Log out of domain")
+        return
     after_single_op()
 
 # STO and RCL for one memory.
@@ -423,13 +452,16 @@ def domem():
     global second, x, mem
     global y, t, z, xs
     if second:
-        mem = x
-    else:
+        # recall
         t = z
         z = y
         y = x
         xs = ""
         x = mem
+        xs = format_number(x)
+    else:
+        # store
+        mem = x
     draw_stack
 
 # sin key, does asin too
@@ -447,8 +479,8 @@ def dosin():
             else:
                 x = sin(x)
     except:
-        x = 9.999999e99
-        xs = "9.999999e99"                      
+        disp_error("Illegal value for sin/asin")
+        return
     after_single_op()
 
 # cos key, does acos too
@@ -466,8 +498,8 @@ def docos():
             else:
                 x = cos(x)
     except:
-        x = 9.999999e99
-        xs = "9.999999e99"                      
+        disp_error("Illegal value for cos/acos")
+        return
     after_single_op()
 
 # tan key, does atan too
@@ -485,8 +517,8 @@ def dotan():
             else:
                 x = tan(x)
     except:
-        x = 9.999999e99
-        xs = "9.999999e99"  
+        disp_error("Illegal value for tan/atan")
+        return
        
     after_single_op()
 
@@ -599,6 +631,10 @@ draw_menu("STACK  ROUND  BOOL  BASE   DEG")
 while True:
     draw_stack()
     key = wait_key()
+
+    if errorUp:
+        clear_error()
+        continue
 
     # Look for menu key
     if key <= 15:
