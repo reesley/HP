@@ -6,6 +6,7 @@ The display starts up with the X, Y, Z, and T registers all set to 0. Along the 
 
 Here are what the keys do (from top to bottom). Note that keys not mentioned, are not implemented.
 
+```
 Function keys : As mentioned above: STACK, ROUND, BOOL, BASE, and DEG
 
 2nd           : Combines to do 2nd operation on key
@@ -58,4 +59,5 @@ Home          : Exits program un-gracefully
 
 Enter
 
+```
 
