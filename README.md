@@ -4,6 +4,8 @@ This is python code to emulate an HP calculator on your TI-Evo. It uses the pyth
 
 The display starts up with the X, Y, Z, and T registers all set to 0. Along the bottom are the function keys menu, showing STACK, ROUND, BOOL, BASE, and DEG. You can enter an number by using the digit keys, then press Enter to push it onto the stack. Enter another number, then push '+' to add them. It supports the usual operations, including trig functions like sin, asin, etc. Use the function keys to get to more features. The STACK menu gives you a menu to operate on the stack, and do things like DUP and SWAP. ROUND gives you an option of rounding, truncating, or getting the fractional part of a number. BOOL will do and, or, nand, nor, and not on the X and Y registers. BASE will show the X register in a different base, either hex or binary. Finally, DEG switches between degrees and radians - the program starts in degress.
 
+When exceptions happen, such as divide by 0, the X register gets 9.999999e99. So sort(-2) will get you 9.999999e99. 
+
 Here are what the keys do (from top to bottom). Note that keys not mentioned, are not implemented.
 
 ```
