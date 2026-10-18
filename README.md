@@ -63,3 +63,6 @@ Enter
 
 ```
 
+Source code is at: https://github.com/reesley/HP
+
+Feel free to use it as you like
