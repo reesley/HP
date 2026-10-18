@@ -19,7 +19,7 @@ del           : Deletes last character in X
 
 clear         : Clears x
 
-y^x           : y^x. 2nd does root
+x^y           : x^y 2nd does yth root of x
 
 sin           : sin(x). 2nd does asin
 
