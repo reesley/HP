@@ -336,21 +336,45 @@ def sub():
 
 # multiply key
 def mul():
-    global x, y
-    x = x * y
-    after_double_op()
+    global x, y, t, z, xs, second
+    if second:
+        t = z
+        z = y
+        y = x
+        x = e     # math.e
+        xs = ""
+        draw_stack()
+    else:
+        x = x * y
+        after_double_op()
 
 # Divide key
 def div():
-    global x, y
-    x = y / x
-    after_double_op()
+    global x, y, t, z, xs, second
+    if second:
+        t = z
+        z = y
+        y = x
+        x = pi
+        xs = ""
+        draw_stack()
+    else:
+        try:
+            x = y / x
+        except:
+            x = 9.999999e99
+            xs = "9.999999e99"
+        after_double_op()
 
 # Sqr key, does sqrt too
 def dosqr():
     global x, second
     if second:
-        x = sqrt(x)
+        try:
+            x = sqrt(x)
+        except:
+            x = 9.999999e99
+            xs = "9.999999e99"
     else:
         x = x * x
     after_single_op()
@@ -358,28 +382,40 @@ def dosqr():
 # Root key, does power too
 def doroot():
     global x,y,second
-    if second:
-        x = pow(x, 1.0/y)
-    else:
-        x = pow(x, y)
+    try:
+        if second:
+            x = pow(x, 1.0/y)
+        else:
+            x = pow(x, y)
+    except:
+        x = 9.999999e99
+        xs = "9.999999e99"        
     after_double_op()
 
 # log key, does e^x too
 def doetox():
     global x, second
-    if second:
-        x = pow(e, x)
-    else:
-        x = log(x) # Log is ln
+    try:
+        if second:
+            x = pow(e, x)
+        else:
+            x = log(x) # Log is ln
+    except:
+        x = 9.999999e99
+        xs = "9.999999e99"                
     after_single_op()
     
 # log10 key, does 10^x too
 def dotenx():
     global x,second
-    if second:
-        x = pow(10.0, x)
-    else:
-        x = log10(x)
+    try:
+        if second:
+            x = pow(10.0, x)
+        else:
+            x = log10(x)
+    except:
+        x = 9.999999e99
+        xs = "9.999999e99"                  
     after_single_op()
 
 # STO and RCL for one memory.
@@ -399,46 +435,59 @@ def domem():
 # sin key, does asin too
 def dosin():
     global x, isDegrees, second
-    if second:
-        if isDegrees:
-            x = degrees(asin(x))
+    try:
+        if second:
+            if isDegrees:
+                x = degrees(asin(x))
+            else:
+                x = asin(x)
         else:
-            x = asin(x)
-    else:
-        if isDegrees:
-            x = sin(radians(x))
-        else:
-            x = sin(x)
+            if isDegrees:
+                x = sin(radians(x))
+            else:
+                x = sin(x)
+    except:
+        x = 9.999999e99
+        xs = "9.999999e99"                      
     after_single_op()
 
 # cos key, does acos too
 def docos():
     global x, isDegrees, second
-    if second:
-        if isDegrees:
-            x = degrees(acos(x))
+    try:
+        if second:
+            if isDegrees:
+                x = degrees(acos(x))
+            else:
+                x = acos(x)
         else:
-            x = acos(x)
-    else:
-        if isDegrees:
-            x = cos(radians(x))
-        else:
-            x = cos(x)
+            if isDegrees:
+                x = cos(radians(x))
+            else:
+                x = cos(x)
+    except:
+        x = 9.999999e99
+        xs = "9.999999e99"                      
     after_single_op()
 
 # tan key, does atan too
 def dotan():
     global x, isDegrees, second
-    if second:
-        if isDegrees:
-            x = degrees(atan(x))
+    try:
+        if second:
+            if isDegrees:
+                x = degrees(atan(x))
+            else:
+                x = atan(x)
         else:
-            x = atan(x)
-    else:
-        if isDegrees:
-            x = tan(radians(x))
-        else:
-            x = tan(x)
+            if isDegrees:
+                x = tan(radians(x))
+            else:
+                x = tan(x)
+    except:
+        x = 9.999999e99
+        xs = "9.999999e99"  
+       
     after_single_op()
 
 # Master key processing handler. A giant if/then/else tree
